@@ -146,10 +146,13 @@ $ touch src/components/{TaskForm,TaskItem}.vue
 `src/views/Home.vue`を下のように編集する。
 
 ```Home.vue
-<template>
-  <h1>Todo App</h1>
-  <task-form />
-  <task-item />
+<template >
+  <v-container>
+    <h1>Todo App</h1>
+    <task-form />
+    <task-item :index="1" name="タスク1" />
+    <task-item :index="2" name="タスク2" />
+  </v-container>
 </template>
 
 <script lang="ts">
@@ -173,7 +176,7 @@ export default {
 このコンポーネントが持つ機能は
 - 入力された内容をボタンが押されたときに親コンポーネントに渡して、テキストフィールドの中身を空にする
 - 入力がないorスペースのみで追加ボタンが押されたとき、エラーメッセージを表示する
-- 
+
 以下のように実装する。
 
 ```TaskForm.vue
@@ -192,7 +195,7 @@ export default {
 
       <v-col cols="12" sm="6">
         <!-- 入力したタスクを追加するボタン -->
-        <v-btn color="success" @click="addTask">追加</v-btn>
+        <v-btn @click="addTask">追加</v-btn>
       </v-col>
     </v-row>
   </v-form>
@@ -200,13 +203,14 @@ export default {
 
 <script lang="ts">
 export default {
+  name: "TaskForm",
   data: () => ({
     taskName: "",
     errorMessage: "",
   }),
   methods: {
     /**
-     * タスクを追加する
+     * タスクを追加する.
      */
     addTask(): void {
       if (!this.taskName.trim()) {
@@ -227,7 +231,51 @@ export default {
 ブラウザに下のように表示されていることを確認する。
 <img width="661" alt="image" src="https://user-images.githubusercontent.com/65007843/211185425-ab9c9c12-398a-4714-908e-cd2d575c151c.png">
 
+### TaskItem.vue
 
+このコンポーネントが持つ機能
+- タスクの表示
+- タスクの削除
+
+以下のように実装する。
+
+``` TaskItem.vue
+<template>
+  <div class="mt-2">
+    <v-btn
+      icon="mdi-delete"
+      size="x-small"
+      color="error"
+      class="mr-2"
+      @click="deleteTask"
+    ></v-btn>
+    <span>{{ name }}</span>
+  </div>
+</template>
+<script lang="ts">
+export default {
+  name: "TaskItem",
+  props: {
+    index: {
+      type: Number,
+      required: true,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+  },
+  methods: {
+    /**
+     * タスクを削除する.
+     */
+    deleteTask(): void {
+      this.$emit("deleteTask", this.index);
+    },
+  },
+};
+</script>
+```
 
 
 
