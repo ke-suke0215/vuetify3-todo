@@ -190,9 +190,6 @@ import TaskItem from "../components/TaskItem.vue";
       </v-col>
     </v-row>
   </v-form>
-  <!-- <v-alert color="red" type="warning" v-if="isEmpty"
-    >タスクを入力してください</v-alert
-  > -->
 </template>
 
 <script lang="ts">
@@ -220,6 +217,10 @@ export default {
 };
 </script>
 ```
+
+ブラウザに下のように表示されていることを確認する。
+<img width="661" alt="image" src="https://user-images.githubusercontent.com/65007843/211185425-ab9c9c12-398a-4714-908e-cd2d575c151c.png">
+
 
 
 
