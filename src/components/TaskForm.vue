@@ -13,7 +13,7 @@
 
       <v-col cols="12" sm="6">
         <!-- 入力したタスクを追加するボタン -->
-        <v-btn color="success" @click="addTask">追加</v-btn>
+        <v-btn @click="addTask">追加</v-btn>
       </v-col>
     </v-row>
   </v-form>
@@ -21,13 +21,14 @@
 
 <script lang="ts">
 export default {
+  name: "TaskForm",
   data: () => ({
     taskName: "",
     errorMessage: "",
   }),
   methods: {
     /**
-     * タスクを追加する
+     * タスクを追加する.
      */
     addTask(): void {
       if (!this.taskName.trim()) {

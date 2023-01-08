@@ -1,6 +1,35 @@
 <template>
-  <div>TaskItem</div>
+  <div class="mt-2">
+    <v-btn
+      icon="mdi-delete"
+      size="x-small"
+      color="error"
+      class="mr-2"
+      @click="deleteTask"
+    ></v-btn>
+    <span>{{ name }}</span>
+  </div>
 </template>
-
-<script lang="ts" setup>
+<script lang="ts">
+export default {
+  name: "TaskItem",
+  props: {
+    index: {
+      type: Number,
+      required: true,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+  },
+  methods: {
+    /**
+     * タスクを削除する.
+     */
+    deleteTask(): void {
+      this.$emit("deleteTask", this.index);
+    },
+  },
+};
 </script>
