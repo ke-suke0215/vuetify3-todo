@@ -14,7 +14,7 @@
 export default {
   name: "TaskItem",
   props: {
-    index: {
+    taskId: {
       type: Number,
       required: true,
     },
@@ -28,7 +28,7 @@ export default {
      * タスクを削除する.
      */
     deleteTask(): void {
-      this.$emit("deleteTask", this.index);
+      this.$emit("deleteTask", this.taskId);
     },
   },
 };
