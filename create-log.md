@@ -70,7 +70,7 @@ success Saved lockfile.
   <h1>Todo App</h1>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts">
 </script>
 ```
 
@@ -163,6 +163,63 @@ import TaskItem from "../components/TaskItem.vue";
 <img width="680" alt="image" src="https://user-images.githubusercontent.com/65007843/211182379-b6920900-117a-477b-b919-77bca337b211.png">
 
 ### TaskForm.vue
+
+このコンポーネントが持つ機能は
+- 入力された内容をボタンが押されたときに親コンポーネントに渡して、テキストフィールドの中身を空にする
+- 入力がないorスペースのみで追加ボタンが押されたとき、エラーメッセージを表示する
+- 
+以下のように実装する。
+
+```TaskForm.vue
+<template>
+  <v-form v-model="valid">
+    <v-row>
+      <v-col cols="12" sm="6">
+        <!-- 新規タスクを入力するテキストフィールド -->
+        <v-text-field
+          v-model="taskName"
+          label="タスクを入力"
+          variant="underlined"
+          :error-messages="errorMessage"
+        ></v-text-field>
+      </v-col>
+
+      <v-col cols="12" sm="6">
+        <!-- 入力したタスクを追加するボタン -->
+        <v-btn color="success" @click="addTask">追加</v-btn>
+      </v-col>
+    </v-row>
+  </v-form>
+  <!-- <v-alert color="red" type="warning" v-if="isEmpty"
+    >タスクを入力してください</v-alert
+  > -->
+</template>
+
+<script lang="ts">
+export default {
+  data: () => ({
+    taskName: "",
+    errorMessage: "",
+  }),
+  methods: {
+    /**
+     * タスクを追加する
+     */
+    addTask(): void {
+      if (!this.taskName.trim()) {
+        // 入力が空orスペースのみの場合は何もしない
+        this.errorMessage = "入力してください。";
+        return;
+      }
+      this.errorMessage = "";
+      // 親コンポーネントに入力内容を渡す
+      this.$emit("click", this.taskName.trim());
+      this.taskName = "";
+    },
+  },
+};
+</script>
+```
 
 
 
