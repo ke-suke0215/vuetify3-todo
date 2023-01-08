@@ -17,7 +17,7 @@
 
 下記にコマンド実行時の出力を載せる。
 
-```zsh
+```sh
 $yarn create vuetify
 yarn create v1.22.17
 [1/4] 🔍  Resolving packages...
@@ -101,4 +101,70 @@ const routes = [
 こうすることで下のように自分で記述したタイトルのみとなり、デフォルトの表記がなくなる。
 
 <img width="729" alt="image" src="https://user-images.githubusercontent.com/65007843/211180733-37bb4e76-18c0-4c72-b372-bbd887de8ff5.png">
+
+## コンポーネント作成
+
+### 作成するコンポーネント
+
+- `TaskForm.vue`（タスクの入力フォーム）
+  - テキストボックス
+  - 追加ボタン
+- `TaskItem.vue`（追加されたタスクの表示）
+  - チェックボックス
+  - タスク名
+  - 削除ボタン
+
+下記コマンドで2つのファイルを作成する。
+
+```sh
+$ touch src/components/{TaskForm,TaskItem}.vue
+```
+
+まずは`Home.vue`で作成したファイルをimportして使ってみる。
+2つのファイルに下のように記述する。
+
+`TaskForm.vue`
+```TaskForm.vue
+<template>
+  <div>TaskForm</div>
+</template>
+
+<script lang="ts" setup>
+</script>
+```
+
+`TaskItem.vue`
+```TaskItem.vue
+<template>
+  <div>TaskItem</div>
+</template>
+
+<script lang="ts" setup>
+</script>
+```
+
+`src/views/Home.vue`を下のように編集する。
+
+```Home.vue
+<template>
+  <h1>Todo App</h1>
+  <task-form />
+  <task-item />
+</template>
+
+<script lang="ts" setup>
+import TaskForm from "../components/TaskForm.vue";
+import TaskItem from "../components/TaskItem.vue";
+</script>
+```
+
+ブラウザに下のように表示されていれば、importがうまく動作してコンポーネントが使用されている。
+
+<img width="680" alt="image" src="https://user-images.githubusercontent.com/65007843/211182379-b6920900-117a-477b-b919-77bca337b211.png">
+
+### TaskForm.vue
+
+
+
+
 
