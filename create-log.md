@@ -155,6 +155,12 @@ $ touch src/components/{TaskForm,TaskItem}.vue
 <script lang="ts">
 import TaskForm from "../components/TaskForm.vue";
 import TaskItem from "../components/TaskItem.vue";
+export default {
+  components: {
+    TaskForm,
+    TaskItem,
+  },
+};
 </script>
 ```
 
