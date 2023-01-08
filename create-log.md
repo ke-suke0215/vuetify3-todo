@@ -129,7 +129,7 @@ $ touch src/components/{TaskForm,TaskItem}.vue
   <div>TaskForm</div>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts">
 </script>
 ```
 
@@ -139,7 +139,7 @@ $ touch src/components/{TaskForm,TaskItem}.vue
   <div>TaskItem</div>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts">
 </script>
 ```
 
@@ -152,7 +152,7 @@ $ touch src/components/{TaskForm,TaskItem}.vue
   <task-item />
 </template>
 
-<script lang="ts" setup>
+<script lang="ts">
 import TaskForm from "../components/TaskForm.vue";
 import TaskItem from "../components/TaskItem.vue";
 </script>
