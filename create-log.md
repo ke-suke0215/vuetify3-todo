@@ -211,7 +211,8 @@ const addTask = (): void => {
 ```
 
 ブラウザに下のように表示されていることを確認する。
-<img width="661" alt="image" src="https://user-images.githubusercontent.com/65007843/211185425-ab9c9c12-398a-4714-908e-cd2d575c151c.png">
+<img width="645" alt="image" src="https://user-images.githubusercontent.com/65007843/211235315-54fcb619-3e49-4bf5-9d58-8a3779a6567f.png">
+
 
 ### TaskItem.vue
 
@@ -247,6 +248,29 @@ const deleteTask = (): void => {
 </template>
 ```
 
+### Home.vueでTaskItem.vueにpropsを渡す
+
+`Home.vue`を下のように編集する
+
+```Home.vue
+<script lang="ts" setup>
+import TaskForm from "../components/TaskForm.vue";
+import TaskItem from "../components/TaskItem.vue";
+</script>
+
+<template >
+  <v-container>
+    <h1>Todo App</h1>
+    <TaskForm />
+    <TaskItem :taskId="1" name="タスク1" />
+    <TaskItem :taskId="2" name="タスク2" />
+  </v-container>
+</template>
+```
+
+画像のように削除ボタンとタスクが2つ表示される。
+
+<img width="617" alt="image" src="https://user-images.githubusercontent.com/65007843/211235502-555416c1-a0ab-410a-aa96-bd37ceec87f2.png">
 
 
 
