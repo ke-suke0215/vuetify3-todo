@@ -272,5 +272,68 @@ import TaskItem from "../components/TaskItem.vue";
 
 <img width="617" alt="image" src="https://user-images.githubusercontent.com/65007843/211235502-555416c1-a0ab-410a-aa96-bd37ceec87f2.png">
 
+## タスクの値をPiniaで管理する
 
+`src/store/app.ts`を下記のように編集する
 
+``` app.ts
+import { defineStore } from 'pinia'
+import { ref, Ref } from 'vue'
+
+// 型定義
+interface Task {
+  id: number;
+  name: string;
+}
+
+export const useAppStore = defineStore('app', () => {
+  const tasks: Ref<Task[]> = ref([]);
+  let serialId = 0;
+
+  /**
+   * タスクを追加する.
+   * @param name タスク名
+   */
+  const addTask = (name: string): void => {
+    serialId++;
+    tasks.value.push({ id: serialId, name: name })
+  }
+
+  /**
+   * タスクを削除する.
+   * @param id 削除するタスクid
+   */
+  const deleteTask = (id: number): void => {
+    tasks.value = tasks.value.filter(task => task.id !== id);
+
+  }
+
+  return { tasks, addTask, deleteTask }
+})
+```
+
+`Home.vue`を以下のように編集する。
+
+```Home.vue
+<script lang="ts" setup>
+import TaskForm from "../components/TaskForm.vue";
+import TaskItem from "../components/TaskItem.vue";
+import { useAppStore } from "../store/app";
+const store = useAppStore();
+</script>
+
+<template >
+  <v-container>
+    <h1>Todo App</h1>
+    <TaskForm @submit="store.addTask" />
+    <!-- for文でタスクを表示させる -->
+    <template v-for="task in store.tasks" :key="task.taskId">
+      <TaskItem :taskId="task.id" :name="task.name" @deleteTask="store.deleteTask" />
+    </template>
+  </v-container>
+</template>
+```
+
+完成
+
+const store = useAppStore();
