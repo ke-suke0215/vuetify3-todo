@@ -66,12 +66,12 @@ success Saved lockfile.
 `src/views/Home.vue`は下記のように編集する  
 
 ```Home.vue
+<script lang="ts" setup>
+</script>
+
 <template>
   <h1>Todo App</h1>
 </template>
-
-<script lang="ts">
-</script>
 ```
 
 すると下のような画面となる。
@@ -110,7 +110,6 @@ const routes = [
   - テキストボックス
   - 追加ボタン
 - `TaskItem.vue`（追加されたタスクの表示）
-  - チェックボックス
   - タスク名
   - 削除ボタン
 
@@ -125,46 +124,37 @@ $ touch src/components/{TaskForm,TaskItem}.vue
 
 `TaskForm.vue`
 ```TaskForm.vue
+<script lang="ts" setup>
+</script>
 <template>
   <div>TaskForm</div>
 </template>
-
-<script lang="ts">
-</script>
 ```
 
 `TaskItem.vue`
 ```TaskItem.vue
+<script lang="ts" setup>
+</script>
 <template>
   <div>TaskItem</div>
 </template>
-
-<script lang="ts">
-</script>
 ```
 
 `src/views/Home.vue`を下のように編集する。
 
 ```Home.vue
+<script lang="ts" setup>
+import TaskForm from "../components/TaskForm.vue";
+import TaskItem from "../components/TaskItem.vue";
+</script>
+
 <template >
   <v-container>
     <h1>Todo App</h1>
-    <task-form />
-    <task-item :index="1" name="タスク1" />
-    <task-item :index="2" name="タスク2" />
+    <TaskForm />
+    <TaskItem />
   </v-container>
 </template>
-
-<script lang="ts">
-import TaskForm from "../components/TaskForm.vue";
-import TaskItem from "../components/TaskItem.vue";
-export default {
-  components: {
-    TaskForm,
-    TaskItem,
-  },
-};
-</script>
 ```
 
 ブラウザに下のように表示されていれば、importがうまく動作してコンポーネントが使用されている。
@@ -180,19 +170,37 @@ export default {
 以下のように実装する。
 
 ```TaskForm.vue
+<script lang="ts" setup>
+import { ref, defineEmits } from "vue";
+const taskName = ref("");
+const errorMessage = ref("");
+
+const emits = defineEmits<{ (e: "submit", name: string): void }>();
+
+/**
+ * タスクを追加する.
+ */
+const addTask = (): void => {
+  if (!taskName.value.trim()) {
+    // 入力が空orスペースのみの場合は何もしない
+    errorMessage.value = "入力してください。";
+    return;
+  }
+  errorMessage.value = "";
+  const name = taskName.value.trim();
+  emits("submit", name);
+  taskName.value = "";
+};
+</script>
+
 <template>
-  <v-form v-model="valid">
+  <v-form>
     <v-row>
       <v-col cols="12" sm="6">
         <!-- 新規タスクを入力するテキストフィールド -->
-        <v-text-field
-          v-model="taskName"
-          label="タスクを入力"
-          variant="underlined"
-          :error-messages="errorMessage"
-        ></v-text-field>
+        <v-text-field v-model="taskName" label="タスクを入力" variant="underlined"
+          :error-messages="errorMessage"></v-text-field>
       </v-col>
-
       <v-col cols="12" sm="6">
         <!-- 入力したタスクを追加するボタン -->
         <v-btn @click="addTask">追加</v-btn>
@@ -200,32 +208,6 @@ export default {
     </v-row>
   </v-form>
 </template>
-
-<script lang="ts">
-export default {
-  name: "TaskForm",
-  data: () => ({
-    taskName: "",
-    errorMessage: "",
-  }),
-  methods: {
-    /**
-     * タスクを追加する.
-     */
-    addTask(): void {
-      if (!this.taskName.trim()) {
-        // 入力が空orスペースのみの場合は何もしない
-        this.errorMessage = "入力してください。";
-        return;
-      }
-      this.errorMessage = "";
-      // 親コンポーネントに入力内容を渡す
-      this.$emit("click", this.taskName.trim());
-      this.taskName = "";
-    },
-  },
-};
-</script>
 ```
 
 ブラウザに下のように表示されていることを確認する。
@@ -240,41 +222,29 @@ export default {
 以下のように実装する。
 
 ``` TaskItem.vue
+<script lang="ts" setup>
+const props = defineProps<{
+  taskId: number;
+  name: string;
+}>();
+
+const emits = defineEmits<{
+  (e: "deleteTask", id: number): void;
+}>();
+
+/**
+ * タスクを削除する.
+ */
+const deleteTask = (): void => {
+  emits("deleteTask", props.taskId);
+};
+</script>
 <template>
   <div class="mt-2">
-    <v-btn
-      icon="mdi-delete"
-      size="x-small"
-      color="error"
-      class="mr-2"
-      @click="deleteTask"
-    ></v-btn>
+    <v-btn icon="mdi-delete" size="x-small" color="error" class="mr-2" @click="deleteTask"></v-btn>
     <span>{{ name }}</span>
   </div>
 </template>
-<script lang="ts">
-export default {
-  name: "TaskItem",
-  props: {
-    index: {
-      type: Number,
-      required: true,
-    },
-    name: {
-      type: String,
-      required: true,
-    },
-  },
-  methods: {
-    /**
-     * タスクを削除する.
-     */
-    deleteTask(): void {
-      this.$emit("deleteTask", this.index);
-    },
-  },
-};
-</script>
 ```
 
 
