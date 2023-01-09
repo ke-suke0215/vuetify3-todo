@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { reactive, ref, Ref } from 'vue'
+import { ref, Ref } from 'vue'
 
 // 型定義
 interface Task {
@@ -17,7 +17,6 @@ export const useAppStore = defineStore('app', () => {
    */
   const addTask = (name: string): void => {
     serialId++;
-    console.log(serialId);
     tasks.value.push({ id: serialId, name: name })
   }
 
