@@ -5,6 +5,9 @@ const errorMessage = ref("");
 
 const emits = defineEmits<{ (e: "submit", name: string): void }>();
 
+/**
+ * タスクを追加する.
+ */
 const addTask = (): void => {
   if (!taskName.value.trim()) {
     // 入力が空orスペースのみの場合は何もしない
