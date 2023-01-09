@@ -1,3 +1,17 @@
+<script lang="ts" setup>
+const props = defineProps<{
+  taskId: number;
+  name: string;
+}>();
+
+const emits = defineEmits<{
+  (e: "deleteTask", id: number): void;
+}>();
+
+const deleteTask = (): void => {
+  emits("deleteTask", props.taskId);
+};
+</script>
 <template>
   <div class="mt-2">
     <v-btn
@@ -10,26 +24,3 @@
     <span>{{ name }}</span>
   </div>
 </template>
-<script lang="ts">
-export default {
-  name: "TaskItem",
-  props: {
-    taskId: {
-      type: Number,
-      required: true,
-    },
-    name: {
-      type: String,
-      required: true,
-    },
-  },
-  methods: {
-    /**
-     * タスクを削除する.
-     */
-    deleteTask(): void {
-      this.$emit("deleteTask", this.taskId);
-    },
-  },
-};
-</script>
