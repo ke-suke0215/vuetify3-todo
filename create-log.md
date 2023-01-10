@@ -335,5 +335,3 @@ const store = useAppStore();
 ```
 
 完成
-
-const store = useAppStore();
