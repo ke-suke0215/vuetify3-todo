@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 const props = defineProps<{
-  taskId: number;
-  name: string;
+  taskId: number,
+  name: string,
 }>();
 
 const emits = defineEmits<{
